@@ -50,6 +50,11 @@ public class Menu extends javax.swing.JFrame {
         jButton2.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(255, 229, 236));
         jButton2.setText("Gestion productos");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(251, 111, 146));
@@ -106,6 +111,12 @@ public class Menu extends javax.swing.JFrame {
         new GestionCategoria().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new GestionProducto().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
