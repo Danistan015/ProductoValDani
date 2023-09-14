@@ -16,6 +16,7 @@ import modelo.Producto;
  * @author sotog
  */
 public class DaoProductos {
+
     public void agregarProducto(Producto producto) throws SQLException {
         try {
             PreparedStatement ps = null;
@@ -28,7 +29,7 @@ public class DaoProductos {
             ps.setString(2, producto.getNombre());
             ps.setInt(3, producto.getIdCategoria());
             ps.setString(4, producto.getDistribuidor());
-            ps.setInt(5, producto.getPrecio());
+            ps.setDouble(5, producto.getPrecio());
             ps.execute();
 
         } catch (SQLException ex) {
@@ -53,10 +54,10 @@ public class DaoProductos {
 
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
-                 double precio = rs.getDouble("precio");
-                  String distribuidor = rs.getString("distribuidor");
-                   String id_categoria = rs.getString("id_categoria");
-                categoriaEncontrada = new Producto(id, nombre, precio, nombre, id);
+                double precio = rs.getDouble("precio");
+                String distribuidor = rs.getString("distribuidor");
+                int id_categoria = rs.getInt("id_categoria");
+                categoriaEncontrada = new Producto(id, nombre, precio, distribuidor, id_categoria);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
@@ -66,32 +67,36 @@ public class DaoProductos {
         return categoriaEncontrada;
     }
 
-    public Categoria editarCategoria(int id) throws SQLException {
-        Categoria categoriaEncontrada = buscarCategoria(id);
+    public Producto editarCategoria(int id) throws SQLException {
+        Producto productosEncontrado = buscarProducto(id);
         PreparedStatement ps = null;
         ResultSet rs = null;
         Conexion_db obConexion_db = new Conexion_db();
         Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE  categoria SET nombre=? WHERE id= '" + id + "'");
+            ps = conn.prepareStatement("UPDATE  categoria SET nombre=?, precio=?,distribuidor=?WHERE id= '" + id + "'");
             String nombre = rs.getString("nombre");
-            categoriaEncontrada.setNombre(nombre);
+            double precio = rs.getDouble("precio");
+            String distribuidor = rs.getString("distribuidor");
+            productosEncontrado.setNombre(nombre);
+            productosEncontrado.setDistribuidor(distribuidor);
+            productosEncontrado.setPrecio(precio);
 
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException();
         }
-        return categoriaEncontrada;
+        return productosEncontrado;
     }
 
-    public void eliminarCategoria(int id) throws SQLException {
+    public void eliminarProductos(int id) throws SQLException {
         PreparedStatement ps = null;
 
         try {
 
             Conexion_db objCon = new Conexion_db();
             Connection conn = objCon.getConexion();
-            ps = conn.prepareStatement("DELETE FROM categoria WHERE id= '" + id + "'");
+            ps = conn.prepareStatement("DELETE FROM productos WHERE id= '" + id + "'");
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException ex) {
@@ -100,5 +105,3 @@ public class DaoProductos {
         }
     }
 }
-
-
