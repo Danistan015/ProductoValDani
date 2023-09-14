@@ -5,6 +5,12 @@
 package Vista;
 
 import Vista.TextPromt.TextPrompt;
+import controlador.ControladorCategoria;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelo.Categoria;
 
 /**
  *
@@ -12,12 +18,16 @@ import Vista.TextPromt.TextPrompt;
  */
 public class GestionCategoria extends javax.swing.JFrame {
 
+    ControladorCategoria controlador;
+
     /**
      * Creates new form GestionCategoria
      */
     public GestionCategoria() {
         initComponents();
-        TextPrompt pHUsuarioss = new TextPrompt("Ingrese el nombre : ", txtNombre);
+        TextPrompt pHUsuarios = new TextPrompt("Ingrese el nombre : ", txtNombre);
+
+        controlador = new ControladorCategoria();
         setLocationRelativeTo(this);
     }
 
@@ -213,13 +223,29 @@ public class GestionCategoria extends javax.swing.JFrame {
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         // TODO add your handling code here:
+
+        if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "no deje campos sin llenar");
+        } else {
+
+            int id = 0;
+            String nombre = txtNombre.getText();
+            Categoria categoria = new Categoria(id, nombre);
+            try {
+                controlador.agregarCategoria(categoria);
+                JOptionPane.showMessageDialog(null, "cateogoria añadida correctamente");
+                limpiarCampo();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "error al añadir");
+            }
+        }
     }//GEN-LAST:event_btnAnadirActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
         new Menu().setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnAnadirMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnadirMouseMoved
@@ -241,7 +267,7 @@ public class GestionCategoria extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnAnadir.setForeground(java.awt.Color.WHITE);
         btnEliminar.setForeground(java.awt.Color.WHITE);
-   
+
         btnModificar.setForeground(java.awt.Color.WHITE);
     }//GEN-LAST:event_jPanel1MouseMoved
 
@@ -278,6 +304,10 @@ public class GestionCategoria extends javax.swing.JFrame {
                 new GestionCategoria().setVisible(true);
             }
         });
+    }
+
+    public void limpiarCampo() {
+        txtNombre.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

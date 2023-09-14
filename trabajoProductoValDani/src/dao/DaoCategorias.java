@@ -25,7 +25,7 @@ public class DaoCategorias {
             Conexion_db conn = new Conexion_db();
             Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO categorias (id, nombre) VALUES (?)";
+            String sql = "INSERT INTO categorias (ID, Nombre) VALUES (?, ?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, categoria.getId());
             ps.setString(2, categoria.getNombre());
@@ -70,7 +70,7 @@ public class DaoCategorias {
         Conexion_db obConexion_db = new Conexion_db();
         Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE  categoria SET nombre=? WHERE id= '" + id + "'");
+            ps = conn.prepareStatement("UPDATE  categorias SET nombre=? WHERE id= '" + id + "'");
             String nombre = rs.getString("nombre");
             categoriaEncontrada.setNombre(nombre);
 
@@ -88,7 +88,7 @@ public class DaoCategorias {
 
             Conexion_db objCon = new Conexion_db();
             Connection conn = objCon.getConexion();
-            ps = conn.prepareStatement("DELETE FROM categoria WHERE id= '" + id + "'");
+            ps = conn.prepareStatement("DELETE FROM categorias WHERE id= '" + id + "'");
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException ex) {
