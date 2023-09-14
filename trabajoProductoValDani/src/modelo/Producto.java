@@ -11,11 +11,12 @@ package modelo;
 public class Producto {
     private int codigo;
     private String nombre;
-    private int precio;
+    private double precio;
     private String distribuidor;
     private int idCategoria;
+    
 
-    public Producto(int codigo, String nombre, int precio, String distribuidor, int idCategoria) {
+    public Producto(int codigo, String nombre, double precio, String distribuidor, int idCategoria) {
         this.codigo = codigo;
         this.nombre = nombre;  
         this.precio = precio;
@@ -39,9 +40,15 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public int getPrecio() {
+    public double getPrecio() {
         return precio;
     }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+   
 
     public void setPrecio(int precio) {
         this.precio = precio;

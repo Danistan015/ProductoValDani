@@ -22,12 +22,13 @@ public class DaoProductos {
             Conexion_db conn = new Conexion_db();
             Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO producto (id, nombre,id_categoria,distribuidor,cantidad,precio) VALUES (?)";
+            String sql = "INSERT INTO producto (id, nombre,id_categoria,distribuidor,precio) VALUES (?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, producto.getCodigo());
             ps.setString(2, producto.getNombre());
-            ps.setString(3, producto.getIdCategoria());
-             ps.setString(2, producto.getNombre());
+            ps.setInt(3, producto.getIdCategoria());
+            ps.setString(4, producto.getDistribuidor());
+            ps.setInt(5, producto.getPrecio());
             ps.execute();
 
         } catch (SQLException ex) {
@@ -36,15 +37,15 @@ public class DaoProductos {
         }
     }
 
-    public Categoria buscarCategoria(int id) throws SQLException {
-        Categoria categoriaEncontrada = null;
+    public Producto buscarProducto(int id) throws SQLException {
+        Producto categoriaEncontrada = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         Conexion_db conn = new Conexion_db();
         Connection con = conn.getConexion();
 
         String where = " WHERE id = '" + id + "'";
-        String sql = "SELECT * FROM categorias" + where;
+        String sql = "SELECT * FROM productos" + where;
 
         try {
             ps = con.prepareStatement(sql);
@@ -52,7 +53,10 @@ public class DaoProductos {
 
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
-                categoriaEncontrada = new Categoria(id, nombre);
+                 double precio = rs.getDouble("precio");
+                  String distribuidor = rs.getString("distribuidor");
+                   String id_categoria = rs.getString("id_categoria");
+                categoriaEncontrada = new Producto(id, nombre, precio, nombre, id);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
