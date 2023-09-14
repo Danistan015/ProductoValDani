@@ -67,7 +67,7 @@ public class DaoProductos {
         return categoriaEncontrada;
     }
 
-    public Producto editarCategoria(int id) throws SQLException {
+    public Producto editarProductos(int id) throws SQLException {
         Producto productosEncontrado = buscarProducto(id);
         PreparedStatement ps = null;
         ResultSet rs = null;

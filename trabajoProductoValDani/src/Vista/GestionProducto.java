@@ -5,13 +5,14 @@
 package Vista;
 
 import Vista.TextPromt.TextPrompt;
+import controlador.ControladorProductos;
 
 /**
  *
  * @author sotog
  */
 public class GestionProducto extends javax.swing.JFrame {
-
+ControladorProductos controlador;
     /**
      * Creates new form GestionProducto
      */
@@ -20,11 +21,9 @@ public class GestionProducto extends javax.swing.JFrame {
         TextPrompt pHUsuario = new TextPrompt("Ingrese  el ID del producto: ", txtID);
         TextPrompt pHUsuarioss = new TextPrompt("Ingrese el nombre : ", txtNombre);
          TextPrompt pHUsuariosss = new TextPrompt("Ingrese  el distribuidor: ", txtDistribuidor);
-        TextPrompt pHUsuariossss = new TextPrompt("Ingrese la cantidad : ", txtCantidad);
          TextPrompt pHUsuariosssss = new TextPrompt("Ingrese  el precio: ", txtPrecio);
-      
-        
         setLocationRelativeTo(this);
+        ControladorProductos controladorProductos= new ControladorProductos();
     }
 
     /**
@@ -47,7 +46,6 @@ public class GestionProducto extends javax.swing.JFrame {
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         txtDistribuidor = new javax.swing.JTextField();
-        txtCantidad = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -140,8 +138,6 @@ public class GestionProducto extends javax.swing.JFrame {
 
         txtDistribuidor.setBackground(new java.awt.Color(255, 229, 236));
 
-        txtCantidad.setBackground(new java.awt.Color(255, 229, 236));
-
         txtPrecio.setBackground(new java.awt.Color(255, 229, 236));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -167,13 +163,12 @@ public class GestionProducto extends javax.swing.JFrame {
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(txtDistribuidor, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtDistribuidor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
                             .addComponent(txtID))
                         .addGap(83, 83, 83)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)
-                            .addComponent(txtCantidad))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(58, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -193,10 +188,8 @@ public class GestionProducto extends javax.swing.JFrame {
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
-                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnadir)
                     .addComponent(btnEliminar)
@@ -330,7 +323,6 @@ public class GestionProducto extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtDistribuidor;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
