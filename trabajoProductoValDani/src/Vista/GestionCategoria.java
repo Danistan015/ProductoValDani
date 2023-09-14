@@ -19,6 +19,7 @@ public class GestionCategoria extends javax.swing.JFrame {
         initComponents();
         TextPrompt pHUsuario = new TextPrompt("Ingrese  el ID: ", txtID);
         TextPrompt pHUsuarioss = new TextPrompt("Ingrese el nombre : ", txtNombre);
+        setLocationRelativeTo(this);
     }
 
     /**
@@ -34,15 +35,15 @@ public class GestionCategoria extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAnadir = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -65,24 +66,39 @@ public class GestionCategoria extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 194, 209));
-
-        jButton1.setBackground(new java.awt.Color(251, 111, 146));
-        jButton1.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 229, 236));
-        jButton1.setText("Añadir  categoria");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanel1MouseMoved(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(251, 111, 146));
-        jButton2.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 229, 236));
-        jButton2.setText("Modificar  categoria");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAnadir.setBackground(new java.awt.Color(251, 111, 146));
+        btnAnadir.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        btnAnadir.setForeground(new java.awt.Color(255, 229, 236));
+        btnAnadir.setText("Añadir  categoria");
+        btnAnadir.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnAnadirMouseMoved(evt);
+            }
+        });
+        btnAnadir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAnadirActionPerformed(evt);
+            }
+        });
+
+        btnModificar.setBackground(new java.awt.Color(251, 111, 146));
+        btnModificar.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 229, 236));
+        btnModificar.setText("Modificar  categoria");
+        btnModificar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnModificarMouseMoved(evt);
+            }
+        });
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
             }
         });
 
@@ -107,18 +123,28 @@ public class GestionCategoria extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        jButton3.setBackground(new java.awt.Color(251, 111, 146));
-        jButton3.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 229, 236));
-        jButton3.setText("Eliminar  categoria");
+        btnEliminar.setBackground(new java.awt.Color(251, 111, 146));
+        btnEliminar.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 229, 236));
+        btnEliminar.setText("Eliminar  categoria");
+        btnEliminar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnEliminarMouseMoved(evt);
+            }
+        });
 
-        jButton4.setBackground(new java.awt.Color(251, 111, 146));
-        jButton4.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(255, 229, 236));
-        jButton4.setText("Q");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscar.setBackground(new java.awt.Color(251, 111, 146));
+        btnBuscar.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
+        btnBuscar.setForeground(new java.awt.Color(255, 229, 236));
+        btnBuscar.setText("Q");
+        btnBuscar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                btnBuscarMouseMoved(evt);
+            }
+        });
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -133,15 +159,15 @@ public class GestionCategoria extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnAnadir)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton3)
+                                .addComponent(btnEliminar)
                                 .addGap(58, 58, 58)
-                                .addComponent(jButton2)
+                                .addComponent(btnModificar)
                                 .addGap(24, 24, 24))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(79, 79, 79)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
                         .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(94, 94, 94)
@@ -162,12 +188,12 @@ public class GestionCategoria extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(46, 46, 46)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
+                    .addComponent(btnAnadir)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnModificar))
                 .addGap(36, 36, 36)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(29, Short.MAX_VALUE))
@@ -201,17 +227,17 @@ public class GestionCategoria extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnAnadirActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
@@ -219,6 +245,34 @@ public class GestionCategoria extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void btnAnadirMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAnadirMouseMoved
+        // TODO add your handling code here:
+        btnAnadir.setForeground(java.awt.Color.MAGENTA);
+    }//GEN-LAST:event_btnAnadirMouseMoved
+
+    private void btnEliminarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseMoved
+        // TODO add your handling code here:
+        btnEliminar.setForeground(java.awt.Color.MAGENTA);
+    }//GEN-LAST:event_btnEliminarMouseMoved
+
+    private void btnModificarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarMouseMoved
+        // TODO add your handling code here:
+        btnModificar.setForeground(java.awt.Color.MAGENTA);
+    }//GEN-LAST:event_btnModificarMouseMoved
+
+    private void btnBuscarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseMoved
+        // TODO add your handling code here:
+        btnBuscar.setForeground(java.awt.Color.MAGENTA);
+    }//GEN-LAST:event_btnBuscarMouseMoved
+
+    private void jPanel1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseMoved
+        // TODO add your handling code here:
+        btnAnadir.setForeground(java.awt.Color.WHITE);
+        btnEliminar.setForeground(java.awt.Color.WHITE);
+        btnBuscar.setForeground(java.awt.Color.WHITE);
+        btnModificar.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_jPanel1MouseMoved
 
     /**
      * @param args the command line arguments
@@ -256,10 +310,10 @@ public class GestionCategoria extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnAnadir;
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
