@@ -136,6 +136,11 @@ public class GestionProducto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tabla);
 
         btnEliminar.setBackground(new java.awt.Color(251, 111, 146));
@@ -145,6 +150,11 @@ public class GestionProducto extends javax.swing.JFrame {
         btnEliminar.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 btnEliminarMouseMoved(evt);
+            }
+        });
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
             }
         });
 
@@ -291,6 +301,7 @@ public class GestionProducto extends javax.swing.JFrame {
                 Producto producto = new Producto(id, nombre, precio, distribuidor, categoria);
                 controlador.agregarProducto(producto);
                 JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
+                cargarTabla();
                 limpiarCampos();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "Error al añadir el producto");
@@ -307,6 +318,28 @@ public class GestionProducto extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+         if (!validarNumero(txtID.getText().trim()) || !validarNumero(txtPrecio.getText().trim())) {
+            JOptionPane.showMessageDialog(rootPane, "Solo los números son válidos");
+        } else if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtDistribuidor.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor llene todos los campos");
+        } else {
+            String nombre = txtNombre.getText();
+            int id = Integer.parseInt(txtID.getText());
+            String distribuidor = txtDistribuidor.getText();
+            double precio = Double.parseDouble(txtPrecio.getText());
+
+            String nombreCategoria = comboCategoria.getSelectedItem().toString();
+            try {
+                int categoria = controladorCategoria.buscarID(nombreCategoria);
+                Producto producto = new Producto(id,nombre, precio, distribuidor, categoria);
+                controlador.editarProducto(id,nombre, precio, distribuidor, categoria);
+                JOptionPane.showMessageDialog(null, "Producto modificado correctamente");
+                cargarTabla();
+                limpiarCampos();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al modificar el producto");
+            }
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnEliminarMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarMouseMoved
@@ -337,6 +370,32 @@ public class GestionProducto extends javax.swing.JFrame {
         this.dispose();
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+         int seleccionado = tabla.getSelectedRow();
+
+        txtID.setText(tabla.getValueAt(seleccionado, 0).toString());
+        txtNombre.setText(tabla.getValueAt(seleccionado, 1).toString());
+        txtDistribuidor.setText(tabla.getValueAt(seleccionado, 3).toString());
+        txtPrecio.setText(tabla.getValueAt(seleccionado, 4).toString());
+        
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        
+            int id = Integer.parseInt(txtID.getText());
+            try {
+                controlador.eliminarProducto(id);
+                JOptionPane.showMessageDialog(null, "producto eliminada correctamente");
+                cargarTabla();
+                limpiarCampos();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "error al eliminar");
+            }
+        
+    }//GEN-LAST:event_btnEliminarActionPerformed
     public static boolean validarNumero(String datos) {
         return datos.matches("[0-9]*");
     }

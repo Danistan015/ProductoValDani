@@ -38,6 +38,7 @@ public class DaoProductos {
         }
     }
 
+    
     public Producto buscarProducto(int id) throws SQLException {
         Producto productoEncontrado = null;
         PreparedStatement ps = null;
@@ -67,28 +68,25 @@ public class DaoProductos {
         return productoEncontrado;
     }
 
-    public Producto editarProductos(int id) throws SQLException {
-        Producto productosEncontrado = buscarProducto(id);
+     public void editarProductos(int id, String nombre, double precio, String distribuidor, int id_categoria) throws SQLException {
         PreparedStatement ps = null;
-        ResultSet rs = null;
         Conexion_db obConexion_db = new Conexion_db();
         Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE  categoria SET nombre=?, precio=?,distribuidor=?  WHERE id= '" + id + "'");
-            String nombre = rs.getString("nombre");
-            double precio = rs.getDouble("precio");
-            String distribuidor = rs.getString("distribuidor");
-
-            productosEncontrado.setNombre(nombre);
-            productosEncontrado.setDistribuidor(distribuidor);
-            productosEncontrado.setPrecio(precio);
+            ps = conn.prepareStatement("UPDATE productos SET nombre=?,precio=?,distribuidor=?, id_categoria=? WHERE id=?");
+            ps.setString(1, nombre);
+            ps.setDouble(2, precio);
+            ps.setString(3,distribuidor);
+            ps.setInt(4,id_categoria);
+            ps.setInt(5,id);
+            ps.execute();
 
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException();
         }
-        return productosEncontrado;
     }
+
 
     public void eliminarProductos(int id) throws SQLException {
         PreparedStatement ps = null;

@@ -35,6 +35,7 @@ public class GestionCategoria extends javax.swing.JFrame {
         cargarTabla();
         controlador = new ControladorCategoria();
         setLocationRelativeTo(this);
+        
     }
 
     /**

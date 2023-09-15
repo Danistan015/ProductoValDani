@@ -28,8 +28,8 @@ public class ControladorProductos {
         return dao.buscarProducto(id);
     }
     
-    public Producto editarProducto(int id) throws SQLException{
-        return dao.editarProductos(id);
+    public void editarProducto(int id,String nombre, double precio, String distribuidor, int id_categoria) throws SQLException{
+        dao.editarProductos(id,nombre, precio, distribuidor, id_categoria);
     }
     
     public void eliminarProducto(int id) throws SQLException{
