@@ -159,7 +159,7 @@ public class GestionProducto extends javax.swing.JFrame {
         comboCategoria.setBackground(new java.awt.Color(255, 229, 236));
         comboCategoria.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         comboCategoria.setForeground(new java.awt.Color(0, 0, 0));
-        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione la categoria", "Item 2", "Item 3", "Item 4" }));
+        comboCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione la categoria", "carros", "Tegnologia", " " }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -260,26 +260,38 @@ public class GestionProducto extends javax.swing.JFrame {
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         // TODO add your handling code here:
-        if (!validarNumero(txtID.getText().trim()) || !validarNumero(txtPrecio.getText().trim())) {
-            JOptionPane.showMessageDialog(rootPane, "Solo los números son válidos");
-        } else if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtDistribuidor.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "Por favor llene todos los campos");
-        } else {
-            String nombre = txtNombre.getText();
-            int id = Integer.parseInt(txtID.getText());
-            String distribuidor = txtDistribuidor.getText();
-            double precio = Double.parseDouble(txtPrecio.getText());
+       if (!validarNumero(txtID.getText().trim()) || !validarNumero(txtPrecio.getText().trim())) {
+    JOptionPane.showMessageDialog(rootPane, "Solo los números son válidos");
+} else if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtDistribuidor.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane, "Por favor llene todos los campos");
+} else {
+    String nombre = txtNombre.getText();
+    int id = Integer.parseInt(txtID.getText());
+    String distribuidor = txtDistribuidor.getText();
+    double precio = Double.parseDouble(txtPrecio.getText());
 
-            Producto producto = new Producto(id, nombre, precio, distribuidor);
+    int categoria = 0;  // Valor predeterminado o un valor que tenga sentido si no se selecciona una categoría
 
-            try {
-                controlador.agregarProducto(producto);
-                JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
-                limpiarCampos();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al añadir el producto");
-            }
-        }
+    String categoriaStr = comboCategoria.getSelectedItem().toString();
+
+    try {
+        categoria = Integer.parseInt(categoriaStr);
+    } catch (NumberFormatException e) {
+        // Manejo de errores si la conversión no es exitosa
+        JOptionPane.showMessageDialog(null, "Error en la selección de categoría");
+    }
+
+    Producto producto = new Producto(id, nombre, precio, distribuidor, categoria);
+
+    try {
+        controlador.agregarProducto(producto);
+        JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
+        limpiarCampos();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al añadir el producto");
+    }
+}
+
 
 
     }//GEN-LAST:event_btnAnadirActionPerformed

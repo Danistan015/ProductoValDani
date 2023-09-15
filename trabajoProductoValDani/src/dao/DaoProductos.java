@@ -23,12 +23,13 @@ public class DaoProductos {
             Conexion_db conn = new Conexion_db();
             Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO productos (id, nombre, distribuidor, precio) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO productos (id, nombre, distribuidor, precio,id_categoria) VALUES (?, ?, ?, ?,?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, producto.getCodigo());
             ps.setString(2, producto.getNombre());
             ps.setString(3, producto.getDistribuidor());
             ps.setDouble(4, producto.getPrecio());
+            ps.setInt(5, producto.getIdCategoria());
             ps.execute();
 
         } catch (SQLException ex) {
@@ -38,7 +39,7 @@ public class DaoProductos {
     }
 
     public Producto buscarProducto(int id) throws SQLException {
-        Producto categoriaEncontrada = null;
+        Producto productoEncontrado = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         Conexion_db conn = new Conexion_db();
@@ -55,14 +56,15 @@ public class DaoProductos {
                 String nombre = rs.getString("nombre");
                 double precio = rs.getDouble("precio");
                 String distribuidor = rs.getString("distribuidor");
-                categoriaEncontrada = new Producto(id, nombre, precio, distribuidor);
+                int idCategoria= rs.getInt("id_Categoria");
+                productoEncontrado = new Producto(id, nombre, precio, distribuidor,idCategoria);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException();
         }
 
-        return categoriaEncontrada;
+        return productoEncontrado;
     }
 
     public Producto editarProductos(int id) throws SQLException {
@@ -72,13 +74,15 @@ public class DaoProductos {
         Conexion_db obConexion_db = new Conexion_db();
         Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE  categoria SET nombre=?, precio=?,distribuidor=?WHERE id= '" + id + "'");
+            ps = conn.prepareStatement("UPDATE  categoria SET nombre=?, precio=?,distribuidor=?  WHERE id= '" + id + "'");
             String nombre = rs.getString("nombre");
             double precio = rs.getDouble("precio");
             String distribuidor = rs.getString("distribuidor");
+            
             productosEncontrado.setNombre(nombre);
             productosEncontrado.setDistribuidor(distribuidor);
             productosEncontrado.setPrecio(precio);
+           
 
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
