@@ -150,6 +150,11 @@ public class GestionCategoria extends javax.swing.JFrame {
                 btnEliminarMouseMoved(evt);
             }
         });
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(251, 111, 146));
@@ -223,7 +228,7 @@ public class GestionCategoria extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -308,6 +313,24 @@ public class GestionCategoria extends javax.swing.JFrame {
         lblID.setText(tabla.getValueAt(seleccionado, 0).toString());
         txtNombre.setText(tabla.getValueAt(seleccionado, 1).toString());
     }//GEN-LAST:event_tablaMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:
+        if (lblID.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "seleccione una categoria de productos");
+        } else {
+            int id = Integer.parseInt(lblID.getText());
+            try {
+                controlador.eliminarCategoria(id);
+                JOptionPane.showMessageDialog(null, "cateogoria eliminada correctamente");
+                cargarTabla();
+                limpiarCampo();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "error al eliminar");
+            }
+        }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,6 +6,7 @@ package controlador;
 
 import dao.DaoCategorias;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import modelo.Categoria;
 
 /**
@@ -24,14 +25,21 @@ public class ControladorCategoria {
     }
     
     public Categoria buscarCategoria(int id) throws SQLException{
-        return dao.buscarCategoria(id);
+        return dao.buscarCategoriaId(id);
     }
     
-    public Categoria editarCategoria(int id, String nombre) throws SQLException{
-        return dao.editarCategoria(id, nombre);
+    public int buscarID(String nombre) throws SQLException{
+        return dao.buscarIDCategoria(nombre);
+    }
+    public void editarCategoria(int id, String nombre) throws SQLException{
+        dao.editarCategoria(id, nombre);
     }
     
     public void eliminarCategoria(int id) throws SQLException{
         dao.eliminarCategoria(id);
+    }
+    
+    public ArrayList<Categoria> obtenerCategorias(){
+        return dao.getAllCategories();
     }
 }

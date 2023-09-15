@@ -5,11 +5,21 @@
 package Vista;
 
 import Vista.TextPromt.TextPrompt;
+import conexion.Conexion_db;
+import controlador.ControladorCategoria;
 import controlador.ControladorProductos;
 import dao.DaoProductos;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Categoria;
 import modelo.Producto;
+import org.mariadb.jdbc.Connection;
 
 /**
  *
@@ -18,7 +28,9 @@ import modelo.Producto;
 public class GestionProducto extends javax.swing.JFrame {
 
     ControladorProductos controlador;
+    ControladorCategoria controladorCategoria;
     DaoProductos dao;
+
     /**
      * Creates new form GestionProducto
      */
@@ -29,8 +41,11 @@ public class GestionProducto extends javax.swing.JFrame {
         TextPrompt pHUsuariosss = new TextPrompt("Ingrese  el distribuidor: ", txtDistribuidor);
         TextPrompt pHUsuariosssss = new TextPrompt("Ingrese  el precio: ", txtPrecio);
         setLocationRelativeTo(this);
-        this.dao=dao;
-        ControladorProductos controladorProductos = new ControladorProductos(dao);
+        this.dao = dao;
+        controlador = new ControladorProductos(dao);
+        controladorCategoria = new ControladorCategoria();
+        cargarTabla();
+        cargarCombo();
     }
 
     /**
@@ -49,7 +64,7 @@ public class GestionProducto extends javax.swing.JFrame {
         txtID = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         txtDistribuidor = new javax.swing.JTextField();
@@ -110,7 +125,7 @@ public class GestionProducto extends javax.swing.JFrame {
         txtNombre.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         txtNombre.setForeground(new java.awt.Color(0, 0, 0));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -121,7 +136,7 @@ public class GestionProducto extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tabla);
 
         btnEliminar.setBackground(new java.awt.Color(251, 111, 146));
         btnEliminar.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
@@ -260,38 +275,27 @@ public class GestionProducto extends javax.swing.JFrame {
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
         // TODO add your handling code here:
-       if (!validarNumero(txtID.getText().trim()) || !validarNumero(txtPrecio.getText().trim())) {
-    JOptionPane.showMessageDialog(rootPane, "Solo los números son válidos");
-} else if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtDistribuidor.getText().isEmpty()) {
-    JOptionPane.showMessageDialog(rootPane, "Por favor llene todos los campos");
-} else {
-    String nombre = txtNombre.getText();
-    int id = Integer.parseInt(txtID.getText());
-    String distribuidor = txtDistribuidor.getText();
-    double precio = Double.parseDouble(txtPrecio.getText());
+        if (!validarNumero(txtID.getText().trim()) || !validarNumero(txtPrecio.getText().trim())) {
+            JOptionPane.showMessageDialog(rootPane, "Solo los números son válidos");
+        } else if (txtID.getText().isEmpty() || txtNombre.getText().isEmpty() || txtPrecio.getText().isEmpty() || txtDistribuidor.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor llene todos los campos");
+        } else {
+            String nombre = txtNombre.getText();
+            int id = Integer.parseInt(txtID.getText());
+            String distribuidor = txtDistribuidor.getText();
+            double precio = Double.parseDouble(txtPrecio.getText());
 
-    int categoria = 0;  // Valor predeterminado o un valor que tenga sentido si no se selecciona una categoría
-
-    String categoriaStr = comboCategoria.getSelectedItem().toString();
-
-    try {
-        categoria = Integer.parseInt(categoriaStr);
-    } catch (NumberFormatException e) {
-        // Manejo de errores si la conversión no es exitosa
-        JOptionPane.showMessageDialog(null, "Error en la selección de categoría");
-    }
-
-    Producto producto = new Producto(id, nombre, precio, distribuidor, categoria);
-
-    try {
-        controlador.agregarProducto(producto);
-        JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
-        limpiarCampos();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al añadir el producto");
-    }
-}
-
+            String nombreCategoria = comboCategoria.getSelectedItem().toString();
+            try {
+                int categoria = controladorCategoria.buscarID(nombreCategoria);
+                Producto producto = new Producto(id, nombre, precio, distribuidor, categoria);
+                controlador.agregarProducto(producto);
+                JOptionPane.showMessageDialog(null, "Producto añadido correctamente");
+                limpiarCampos();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al añadir el producto");
+            }
+        }
 
 
     }//GEN-LAST:event_btnAnadirActionPerformed
@@ -349,11 +353,79 @@ public class GestionProducto extends javax.swing.JFrame {
 
     }
 
+    public void cargarTabla() {
+        try {
+            DefaultTableModel modelo = new DefaultTableModel();
+            tabla.setModel(modelo);
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+
+            Conexion_db conn = new Conexion_db();
+            Connection con = (Connection) conn.getConexion();
+
+            String sql = "SELECT * FROM productos";
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
+            int cantidadColumnas = rsMd.getColumnCount();
+
+            modelo.addColumn("id");
+            modelo.addColumn("nombre");
+            modelo.addColumn("id categoria");
+            modelo.addColumn("distribuidor");
+            modelo.addColumn("precio");
+
+            int[] anchos = {420, 420, 420, 420, 420};
+            for (int i = 0; i < tabla.getColumnCount(); i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+
+                }
+                modelo.addRow(filas);
+            }
+
+        } catch (SQLException ex) {
+            System.err.print(ex.toString());
+        }
+    }
+
+        public void cargarCombo() {
+            try {
+                DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
+                comboCategoria.setModel(model);
+                PreparedStatement ps = null;
+                ResultSet rs = null;
+
+                Conexion_db conn = new Conexion_db();
+                Connection con = (Connection) conn.getConexion();
+
+                String sql = "SELECT * FROM categorias";
+
+                ps = con.prepareStatement(sql);
+                rs = ps.executeQuery();
+
+                model.addElement("Seleccione una categoría"); // Agrega la opción predeterminada
+
+                while (rs.next()) {
+                    String categoryName = rs.getString("Nombre");
+                    model.addElement(categoryName);
+                }
+
+            } catch (SQLException ex) {
+                System.err.print(ex.toString());
+            }
+        }
+
     /**
      * @param args the command line arguments
      */
-   
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnadir;
@@ -367,7 +439,7 @@ public class GestionProducto extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tabla;
     private javax.swing.JTextField txtDistribuidor;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;

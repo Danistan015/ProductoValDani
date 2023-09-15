@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Categoria;
@@ -19,24 +20,24 @@ import modelo.Categoria;
  */
 public class DaoCategorias {
 
-   public void agregarCategoria(Categoria categoria) throws SQLException {
-    try {
-        PreparedStatement ps = null;
-        Conexion_db conn = new Conexion_db();
-        Connection con = conn.getConexion();
+    public void agregarCategoria(Categoria categoria) throws SQLException {
+        try {
+            PreparedStatement ps = null;
+            Conexion_db conn = new Conexion_db();
+            Connection con = conn.getConexion();
 
-        String sql = "INSERT INTO categorias (Nombre) VALUES (?)";
-        ps = con.prepareStatement(sql);
-        ps.setString(1, categoria.getNombre());
-        ps.execute();
+            String sql = "INSERT INTO categorias (Nombre) VALUES (?)";
+            ps = con.prepareStatement(sql);
+            ps.setString(1, categoria.getNombre());
+            ps.execute();
 
-    } catch (SQLException ex) {
-        System.err.println(ex.getMessage());
-        throw new SQLException();
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            throw new SQLException();
+        }
     }
-}
 
-    public Categoria buscarCategoria(int id) throws SQLException {
+    public Categoria buscarCategoriaId(int id) throws SQLException {
         Categoria categoriaEncontrada = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -62,21 +63,43 @@ public class DaoCategorias {
         return categoriaEncontrada;
     }
 
-    public Categoria editarCategoria(int id, String nombre) throws SQLException {
-        Categoria categoriaEncontrada = buscarCategoria(id);
+    public int buscarIDCategoria(String nombre) throws SQLException {
+        int id = 0;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Conexion_db obConexion_db = new Conexion_db();
-        Connection conn = obConexion_db.getConexion();
+        Conexion_db conn = new Conexion_db();
+        Connection con = conn.getConexion();
+
+        String where = " WHERE Nombre = '" + nombre + "'";
+        String sql = "SELECT * FROM categorias" + where;
+
         try {
-            ps = conn.prepareStatement("UPDATE  categorias SET nombre=? WHERE id= '" + id + "'");
-           ps.setString(1, nombre);
-           categoriaEncontrada.setNombre(nombre);
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("ID");
+            }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException();
         }
-        return categoriaEncontrada;
+        return id;
+    }
+
+    public void editarCategoria(int id, String nombre) throws SQLException {
+        PreparedStatement ps = null;
+        Conexion_db obConexion_db = new Conexion_db();
+        Connection conn = obConexion_db.getConexion();
+        try {
+            ps = conn.prepareStatement("UPDATE categorias SET Nombre=? WHERE ID=?");
+            ps.setString(1, nombre);
+            ps.setInt(2, id);
+            ps.execute();
+
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            throw new SQLException();
+        }
     }
 
     public void eliminarCategoria(int id) throws SQLException {
@@ -94,4 +117,30 @@ public class DaoCategorias {
             throw new SQLException();
         }
     }
+
+    public ArrayList<Categoria> getAllCategories() {
+        ArrayList<Categoria> categorias = new ArrayList<>();
+
+        try {
+            PreparedStatement ps;
+            ResultSet rs;
+            Conexion_db objCon = new Conexion_db();
+            Connection conn = objCon.getConexion();
+
+            String query = "SELECT * FROM categorias";
+
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String categoryName = rs.getString("Nombre");
+                Categoria category = new Categoria(categoryName);
+                categorias.add(category);
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.toString());
+        }
+        return categorias;
+    }
+
 }
