@@ -123,6 +123,8 @@ public class GestionCategoria extends javax.swing.JFrame {
         jLabel1.setText("Categorias");
 
         txtNombre.setBackground(new java.awt.Color(255, 229, 236));
+        txtNombre.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -370,6 +372,7 @@ public class GestionCategoria extends javax.swing.JFrame {
 
     public void limpiarCampo() {
         txtNombre.setText("");
+        lblID.setText("");
     }
 
     public void cargarTabla() {

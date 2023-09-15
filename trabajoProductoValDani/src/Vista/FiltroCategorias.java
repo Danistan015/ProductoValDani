@@ -26,6 +26,7 @@ public class FiltroCategorias extends javax.swing.JFrame {
         initComponents();
         cargarCombo();
         cargarTablaCompleta();
+        setLocationRelativeTo(this);
     }
 
     /**
@@ -275,7 +276,9 @@ public class FiltroCategorias extends javax.swing.JFrame {
             Conexion_db conn = new Conexion_db();
             Connection con = (Connection) conn.getConexion();
 
-            String sql = "SELECT * FROM productos";
+             String sql = "SELECT p.id, p.nombre, p.id_categoria, c.nombre AS nombre_categoria, p.distribuidor, p.precio FROM productos p "
+                    + "INNER JOIN categorias c ON p.id_categoria = c.id";
+
 
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -286,10 +289,11 @@ public class FiltroCategorias extends javax.swing.JFrame {
             modelo.addColumn("id");
             modelo.addColumn("nombre");
             modelo.addColumn("id categoria");
+            modelo.addColumn("nombre categoria");
             modelo.addColumn("distribuidor");
             modelo.addColumn("precio");
 
-            int[] anchos = {420, 420, 420, 420, 420};
+            int[] anchos = {500, 500, 500, 500, 500, 500};
             for (int i = 0; i < tabla.getColumnCount(); i++) {
                 tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -308,7 +312,7 @@ public class FiltroCategorias extends javax.swing.JFrame {
         }
     }
 
-    public void cargarTablaFiltrada(String categoria) {
+    public void cargarTablaFiltrada(String categoriaNombre) {
         try {
             DefaultTableModel modelo = new DefaultTableModel();
             tabla.setModel(modelo);
@@ -318,9 +322,19 @@ public class FiltroCategorias extends javax.swing.JFrame {
             Conexion_db conn = new Conexion_db();
             Connection con = (Connection) conn.getConexion();
 
-            String sql = "SELECT * FROM productos WHERE Nombre = '" + categoria + "'";
+            String sqlCategoria = "SELECT id FROM categorias WHERE nombre = ?";
+            ps = con.prepareStatement(sqlCategoria);
+            ps.setString(1, categoriaNombre);
+            rs = ps.executeQuery();
 
-            ps = con.prepareStatement(sql);
+            int categoriaId = -1;
+            if (rs.next()) {
+                categoriaId = rs.getInt("id");
+            }
+
+            String sqlProductos = "SELECT * FROM productos WHERE id_categoria = ?";
+            ps = con.prepareStatement(sqlProductos);
+            ps.setInt(1, categoriaId);
             rs = ps.executeQuery();
 
             ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
@@ -341,7 +355,6 @@ public class FiltroCategorias extends javax.swing.JFrame {
                 Object[] filas = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {
                     filas[i] = rs.getObject(i + 1);
-
                 }
                 modelo.addRow(filas);
             }
@@ -350,6 +363,7 @@ public class FiltroCategorias extends javax.swing.JFrame {
             System.err.print(ex.toString());
         }
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
