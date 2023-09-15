@@ -4,6 +4,8 @@
  */
 package Vista;
 
+import dao.DaoProductos;
+
 /**
  *
  * @author sotog
@@ -114,8 +116,11 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new GestionProducto().setVisible(true);
-        this.dispose();
+       DaoProductos dao = new DaoProductos(); // Crear una instancia de DaoProductos
+GestionProducto gestionProducto = new GestionProducto(dao); // Pasar dao como parámetro al constructor
+gestionProducto.setVisible(true);
+this.dispose();
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
