@@ -253,7 +253,7 @@ public class GestionCategoria extends javax.swing.JFrame {
         } else {
 
             String nombre = txtNombre.getText();
-            Categoria categoria = new Categoria(0, nombre);
+            Categoria categoria = new Categoria(nombre);
             try {
                 controlador.agregarCategoria(categoria);
                 JOptionPane.showMessageDialog(null, "cateogoria añadida correctamente");

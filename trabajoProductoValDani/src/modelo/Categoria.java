@@ -8,12 +8,13 @@ package modelo;
  *
  * @author val
  */
+
+
 public class Categoria {
     private int id;
     private String nombre;
 
-    public Categoria(int id, String nombre) {
-        this.id = id;
+    public Categoria(String nombre) {
         this.nombre = nombre;
     }
 
@@ -32,6 +33,4 @@ public class Categoria {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
 }

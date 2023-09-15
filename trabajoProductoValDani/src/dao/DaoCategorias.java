@@ -19,23 +19,22 @@ import modelo.Categoria;
  */
 public class DaoCategorias {
 
-    public void agregarCategoria(Categoria categoria) throws SQLException {
-        try {
-            PreparedStatement ps = null;
-            Conexion_db conn = new Conexion_db();
-            Connection con = conn.getConexion();
+   public void agregarCategoria(Categoria categoria) throws SQLException {
+    try {
+        PreparedStatement ps = null;
+        Conexion_db conn = new Conexion_db();
+        Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO categorias (ID, Nombre) VALUES (ID, ?)";
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, categoria.getId());
-            ps.setString(2, categoria.getNombre());
-            ps.execute();
+        String sql = "INSERT INTO categorias (Nombre) VALUES (?)";
+        ps = con.prepareStatement(sql);
+        ps.setString(1, categoria.getNombre());
+        ps.execute();
 
-        } catch (SQLException ex) {
-            System.err.println(ex.getMessage());
-            throw new SQLException();
-        }
+    } catch (SQLException ex) {
+        System.err.println(ex.getMessage());
+        throw new SQLException();
     }
+}
 
     public Categoria buscarCategoria(int id) throws SQLException {
         Categoria categoriaEncontrada = null;
@@ -53,7 +52,7 @@ public class DaoCategorias {
 
             while (rs.next()) {
                 String nombre = rs.getString("nombre");
-                categoriaEncontrada = new Categoria(id, nombre);
+                categoriaEncontrada = new Categoria(nombre);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
