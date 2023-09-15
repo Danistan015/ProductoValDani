@@ -155,8 +155,6 @@ public class GestionCategoria extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(251, 111, 146));
         jLabel2.setText("Id:");
 
-        lblID.setText("jLabel3");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
