@@ -25,7 +25,7 @@ public class DaoCategorias {
             Conexion_db conn = new Conexion_db();
             Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO categorias (ID, Nombre) VALUES (?, ?)";
+            String sql = "INSERT INTO categorias (ID, Nombre) VALUES (ID, ?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, categoria.getId());
             ps.setString(2, categoria.getNombre());

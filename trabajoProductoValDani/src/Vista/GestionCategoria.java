@@ -5,12 +5,18 @@
 package Vista;
 
 import Vista.TextPromt.TextPrompt;
+import conexion.Conexion_db;
 import controlador.ControladorCategoria;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import modelo.Categoria;
+import org.mariadb.jdbc.Connection;
 
 /**
  *
@@ -26,7 +32,7 @@ public class GestionCategoria extends javax.swing.JFrame {
     public GestionCategoria() {
         initComponents();
         TextPrompt pHUsuarios = new TextPrompt("Ingrese el nombre : ", txtNombre);
-
+        cargarTabla();
         controlador = new ControladorCategoria();
         setLocationRelativeTo(this);
     }
@@ -49,9 +55,10 @@ public class GestionCategoria extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        lblID = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -116,7 +123,7 @@ public class GestionCategoria extends javax.swing.JFrame {
 
         txtNombre.setBackground(new java.awt.Color(255, 229, 236));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -127,7 +134,12 @@ public class GestionCategoria extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tabla);
 
         btnEliminar.setBackground(new java.awt.Color(251, 111, 146));
         btnEliminar.setFont(new java.awt.Font("Poppins Medium", 0, 14)); // NOI18N
@@ -142,6 +154,8 @@ public class GestionCategoria extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Poppins SemiBold", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(251, 111, 146));
         jLabel2.setText("Id:");
+
+        lblID.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -161,9 +175,12 @@ public class GestionCategoria extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnEliminar)))
                                 .addGap(58, 58, 58)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(btnModificar)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGap(24, 24, 24))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(306, 306, 306)
@@ -178,7 +195,8 @@ public class GestionCategoria extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(lblID))
                 .addGap(50, 50, 50)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnadir)
@@ -219,6 +237,12 @@ public class GestionCategoria extends javax.swing.JFrame {
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        if (txtNombre.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "no deje campos sin llenar");
+        } else {
+            int id = Integer.parseInt(lblID.getText());
+            String nombre = txtNombre.getText();
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnadirActionPerformed
@@ -228,12 +252,12 @@ public class GestionCategoria extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "no deje campos sin llenar");
         } else {
 
-            int id = 0;
             String nombre = txtNombre.getText();
-            Categoria categoria = new Categoria(id, nombre);
+            Categoria categoria = new Categoria(0, nombre);
             try {
                 controlador.agregarCategoria(categoria);
                 JOptionPane.showMessageDialog(null, "cateogoria añadida correctamente");
+                cargarTabla();
                 limpiarCampo();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "error al añadir");
@@ -270,6 +294,14 @@ public class GestionCategoria extends javax.swing.JFrame {
 
         btnModificar.setForeground(java.awt.Color.WHITE);
     }//GEN-LAST:event_jPanel1MouseMoved
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        // TODO add your handling code here:
+         int seleccionado = tabla.getSelectedRow();
+         
+        lblID.setText(tabla.getValueAt(seleccionado, 0).toString());
+        txtNombre.setText(tabla.getValueAt(seleccionado, 1).toString());
+    }//GEN-LAST:event_tablaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -310,6 +342,46 @@ public class GestionCategoria extends javax.swing.JFrame {
         txtNombre.setText("");
     }
 
+    public void cargarTabla() {
+        try {
+            DefaultTableModel modelo = new DefaultTableModel();
+            tabla.setModel(modelo);
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+
+            Conexion_db conn = new Conexion_db();
+            Connection con = (Connection) conn.getConexion();
+
+            String sql = "SELECT * FROM categorias";
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
+            int cantidadColumnas = rsMd.getColumnCount();
+
+            modelo.addColumn("Id");
+            modelo.addColumn("Nombre");
+
+            int[] anchos = {420, 320};
+            for (int i = 0; i < tabla.getColumnCount(); i++) {
+                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+
+                }
+                modelo.addRow(filas);
+            }
+
+        } catch (SQLException ex) {
+            System.err.print(ex.toString());
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnadir;
     private javax.swing.JButton btnEliminar;
@@ -324,7 +396,8 @@ public class GestionCategoria extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JLabel lblID;
+    private javax.swing.JTable tabla;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
