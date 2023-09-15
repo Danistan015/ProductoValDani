@@ -62,7 +62,7 @@ public class DaoCategorias {
         return categoriaEncontrada;
     }
 
-    public Categoria editarCategoria(int id) throws SQLException {
+    public Categoria editarCategoria(int id, String nombre) throws SQLException {
         Categoria categoriaEncontrada = buscarCategoria(id);
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -70,9 +70,8 @@ public class DaoCategorias {
         Connection conn = obConexion_db.getConexion();
         try {
             ps = conn.prepareStatement("UPDATE  categorias SET nombre=? WHERE id= '" + id + "'");
-            String nombre = rs.getString("nombre");
-            categoriaEncontrada.setNombre(nombre);
-
+           ps.setString(1, nombre);
+           categoriaEncontrada.setNombre(nombre);
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
             throw new SQLException();

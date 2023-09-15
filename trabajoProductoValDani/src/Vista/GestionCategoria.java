@@ -240,6 +240,14 @@ public class GestionCategoria extends javax.swing.JFrame {
         } else {
             int id = Integer.parseInt(lblID.getText());
             String nombre = txtNombre.getText();
+            try {
+                controlador.editarCategoria(id, nombre);
+                JOptionPane.showMessageDialog(null, "cateogoria modificada correctamente");
+                cargarTabla();
+                limpiarCampo();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "error al  modificar");
+            }
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -295,8 +303,8 @@ public class GestionCategoria extends javax.swing.JFrame {
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         // TODO add your handling code here:
-         int seleccionado = tabla.getSelectedRow();
-         
+        int seleccionado = tabla.getSelectedRow();
+
         lblID.setText(tabla.getValueAt(seleccionado, 0).toString());
         txtNombre.setText(tabla.getValueAt(seleccionado, 1).toString());
     }//GEN-LAST:event_tablaMouseClicked

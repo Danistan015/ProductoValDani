@@ -27,8 +27,8 @@ public class ControladorCategoria {
         return dao.buscarCategoria(id);
     }
     
-    public Categoria editarCategoria(int id) throws SQLException{
-        return dao.editarCategoria(id);
+    public Categoria editarCategoria(int id, String nombre) throws SQLException{
+        return dao.editarCategoria(id, nombre);
     }
     
     public void eliminarCategoria(int id) throws SQLException{
