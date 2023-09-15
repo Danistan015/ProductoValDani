@@ -15,7 +15,7 @@ import modelo.Producto;
 public class ControladorProductos {
      DaoProductos dao;
 
-    public ControladorProductos() {
+    public ControladorProductos( DaoProductos dao) {
         this.dao = dao;
     }
 

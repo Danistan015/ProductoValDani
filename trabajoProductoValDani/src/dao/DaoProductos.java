@@ -23,13 +23,12 @@ public class DaoProductos {
             Conexion_db conn = new Conexion_db();
             Connection con = conn.getConexion();
 
-            String sql = "INSERT INTO producto (id, nombre,id_categoria,distribuidor,precio) VALUES (?)";
+            String sql = "INSERT INTO productos (id, nombre, distribuidor, precio) VALUES (?, ?, ?, ?)";
             ps = con.prepareStatement(sql);
             ps.setInt(1, producto.getCodigo());
             ps.setString(2, producto.getNombre());
-            ps.setInt(3, producto.getIdCategoria());
-            ps.setString(4, producto.getDistribuidor());
-            ps.setDouble(5, producto.getPrecio());
+            ps.setString(3, producto.getDistribuidor());
+            ps.setDouble(4, producto.getPrecio());
             ps.execute();
 
         } catch (SQLException ex) {
@@ -56,8 +55,7 @@ public class DaoProductos {
                 String nombre = rs.getString("nombre");
                 double precio = rs.getDouble("precio");
                 String distribuidor = rs.getString("distribuidor");
-                int id_categoria = rs.getInt("id_categoria");
-                categoriaEncontrada = new Producto(id, nombre, precio, distribuidor, id_categoria);
+                categoriaEncontrada = new Producto(id, nombre, precio, distribuidor);
             }
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
