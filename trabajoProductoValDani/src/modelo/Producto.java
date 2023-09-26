@@ -15,7 +15,7 @@ public class Producto {
     private String distribuidor;
     private int idCategoria;
     
-
+aa
     public Producto(int codigo, String nombre, double precio, String distribuidor,int idCategoria) {
         this.codigo = codigo;
         this.nombre = nombre;  
