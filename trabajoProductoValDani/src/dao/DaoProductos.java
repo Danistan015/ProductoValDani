@@ -4,6 +4,7 @@
  */
 package dao;
 
+import Singleton.DatabaseSingleton;
 import conexion.Conexion_db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,11 +18,16 @@ import modelo.Producto;
  */
 public class DaoProductos {
 
+    private Connection con;
+    
+    public DaoProductos() {
+        con = DatabaseSingleton.getInsTance().getConnection();
+    }
+
+    
     public void agregarProducto(Producto producto) throws SQLException {
         try {
             PreparedStatement ps = null;
-            Conexion_db conn = new Conexion_db();
-            Connection con = conn.getConexion();
 
             String sql = "INSERT INTO productos (id, nombre, id_categoria, distribuidor, precio) VALUES (?, ?, ?, ?,?)";
             ps = con.prepareStatement(sql);
@@ -43,8 +49,6 @@ public class DaoProductos {
         Producto productoEncontrado = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Conexion_db conn = new Conexion_db();
-        Connection con = conn.getConexion();
 
         String where = " WHERE id = '" + id + "'";
         String sql = "SELECT * FROM productos" + where;
@@ -70,10 +74,8 @@ public class DaoProductos {
 
      public void editarProductos(int id, String nombre, double precio, String distribuidor, int id_categoria) throws SQLException {
         PreparedStatement ps = null;
-        Conexion_db obConexion_db = new Conexion_db();
-        Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE productos SET nombre=?,precio=?,distribuidor=?, id_categoria=? WHERE id=?");
+            ps = con.prepareStatement("UPDATE productos SET nombre=?,precio=?,distribuidor=?, id_categoria=? WHERE id=?");
             ps.setString(1, nombre);
             ps.setDouble(2, precio);
             ps.setString(3,distribuidor);
@@ -92,10 +94,7 @@ public class DaoProductos {
         PreparedStatement ps = null;
 
         try {
-
-            Conexion_db objCon = new Conexion_db();
-            Connection conn = objCon.getConexion();
-            ps = conn.prepareStatement("DELETE FROM productos WHERE id= '" + id + "'");
+            ps = con.prepareStatement("DELETE FROM productos WHERE id= '" + id + "'");
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException ex) {

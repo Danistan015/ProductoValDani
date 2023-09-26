@@ -4,6 +4,7 @@
  */
 package dao;
 
+import Singleton.DatabaseSingleton;
 import conexion.Conexion_db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,11 +21,16 @@ import modelo.Categoria;
  */
 public class DaoCategorias {
 
+    private Connection con;
+    
+    public DaoCategorias() {
+        con = DatabaseSingleton.getInsTance().getConnection();
+    }
+
+    
     public void agregarCategoria(Categoria categoria) throws SQLException {
         try {
             PreparedStatement ps = null;
-            Conexion_db conn = new Conexion_db();
-            Connection con = conn.getConexion();
 
             String sql = "INSERT INTO categorias (Nombre) VALUES (?)";
             ps = con.prepareStatement(sql);
@@ -67,8 +73,6 @@ public class DaoCategorias {
         int id = 0;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Conexion_db conn = new Conexion_db();
-        Connection con = conn.getConexion();
 
         String where = " WHERE Nombre = '" + nombre + "'";
         String sql = "SELECT * FROM categorias" + where;
@@ -88,10 +92,8 @@ public class DaoCategorias {
 
     public void editarCategoria(int id, String nombre) throws SQLException {
         PreparedStatement ps = null;
-        Conexion_db obConexion_db = new Conexion_db();
-        Connection conn = obConexion_db.getConexion();
         try {
-            ps = conn.prepareStatement("UPDATE categorias SET Nombre=? WHERE ID=?");
+            ps = con.prepareStatement("UPDATE categorias SET Nombre=? WHERE ID=?");
             ps.setString(1, nombre);
             ps.setInt(2, id);
             ps.execute();
@@ -106,10 +108,7 @@ public class DaoCategorias {
         PreparedStatement ps = null;
 
         try {
-
-            Conexion_db objCon = new Conexion_db();
-            Connection conn = objCon.getConexion();
-            ps = conn.prepareStatement("DELETE FROM categorias WHERE id= '" + id + "'");
+            ps = con.prepareStatement("DELETE FROM categorias WHERE id= '" + id + "'");
             ps.setInt(1, id);
             ps.execute();
         } catch (SQLException ex) {
@@ -124,12 +123,10 @@ public class DaoCategorias {
         try {
             PreparedStatement ps;
             ResultSet rs;
-            Conexion_db objCon = new Conexion_db();
-            Connection conn = objCon.getConexion();
 
             String query = "SELECT * FROM categorias";
 
-            ps = conn.prepareStatement(query);
+            ps = con.prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
