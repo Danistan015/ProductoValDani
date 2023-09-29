@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Singleton;
+package Conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,17 +11,12 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author val
- */
 public class DatabaseSingleton {
-
     private static DatabaseSingleton instance;
     private Connection connection;
 
     private static final String DATABASE_URL = "jdbc:mariadb://localhost:3306/";
-    private static final String DATABASE_NAME = "db_trabajo"; 
+    private static final String DATABASE_NAME = "bd_pruebas"; // Replace with your database name
     private static final String USUARIO = "root";
     private final String PASSWORD = "";
 
@@ -30,7 +25,7 @@ public class DatabaseSingleton {
             Class.forName("org.mariadb.jdbc.Driver");
             connection = DriverManager.getConnection(DATABASE_URL + DATABASE_NAME, USUARIO, PASSWORD);
 
-       
+            // Select the database
             String useDatabaseSQL = "USE " + DATABASE_NAME;
             try (Statement statement = connection.createStatement()) {
                 statement.execute(useDatabaseSQL);

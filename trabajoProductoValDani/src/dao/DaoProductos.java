@@ -21,7 +21,7 @@ public class DaoProductos {
     private Connection con;
     
     public DaoProductos() {
-        con = DatabaseSingleton.getInsTance().getConnection();
+        con = DatabaseSingleton.getInstance().getConnection();
     }
 
     

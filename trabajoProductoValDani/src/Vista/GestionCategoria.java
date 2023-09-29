@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import Singleton.DatabaseSingleton;
 import Vista.TextPromt.TextPrompt;
 import conexion.Conexion_db;
 import controlador.ControladorCategoria;
@@ -11,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -25,6 +27,7 @@ import org.mariadb.jdbc.Connection;
 public class GestionCategoria extends javax.swing.JFrame {
 
     ControladorCategoria controlador;
+    private Connection con;
 
     /**
      * Creates new form GestionCategoria
@@ -32,10 +35,10 @@ public class GestionCategoria extends javax.swing.JFrame {
     public GestionCategoria() {
         initComponents();
         TextPrompt pHUsuarios = new TextPrompt("Ingrese el nombre : ", txtNombre);
-        cargarTabla();
+        con= (Connection) DatabaseSingleton.getInstance().getConnection();
         controlador = new ControladorCategoria();
         setLocationRelativeTo(this);
-        
+         cargarTabla();
     }
 
     /**
@@ -375,43 +378,24 @@ public class GestionCategoria extends javax.swing.JFrame {
         lblID.setText("");
     }
 
+    
     public void cargarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel();
         try {
-            DefaultTableModel modelo = new DefaultTableModel();
+            ArrayList<Categoria> lista = controlador.obtenerCategorias();
+
+            modelo.setColumnIdentifiers(new Object[]{"ID", "nombre"});
             tabla.setModel(modelo);
-            PreparedStatement ps = null;
-            ResultSet rs = null;
 
-            Conexion_db conn = new Conexion_db();
-            Connection con = (Connection) conn.getConexion();
-
-            String sql = "SELECT * FROM categorias";
-
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-
-            ResultSetMetaData rsMd = (ResultSetMetaData) rs.getMetaData();
-            int cantidadColumnas = rsMd.getColumnCount();
-
-            modelo.addColumn("Id");
-            modelo.addColumn("Nombre");
-
-            int[] anchos = {420, 320};
-            for (int i = 0; i < tabla.getColumnCount(); i++) {
-                tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            for (int i = 0; i < lista.size(); i++) {
+                Categoria categoria = lista.get(i);
+                modelo.addRow(new Object[]{
+                    controlador.buscarID(categoria.getNombre()),
+                    categoria.getNombre()
+                });
             }
-
-            while (rs.next()) {
-                Object[] filas = new Object[cantidadColumnas];
-                for (int i = 0; i < cantidadColumnas; i++) {
-                    filas[i] = rs.getObject(i + 1);
-
-                }
-                modelo.addRow(filas);
-            }
-
         } catch (SQLException ex) {
-            System.err.print(ex.toString());
+            JOptionPane.showMessageDialog(null, ex);
         }
     }
 

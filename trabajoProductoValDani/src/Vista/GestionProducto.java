@@ -1,4 +1,4 @@
-/*
+ /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -532,7 +532,6 @@ public class GestionProducto extends javax.swing.JFrame {
             Conexion_db conn = new Conexion_db();
             Connection con = (Connection) conn.getConexion();
 
-            // Consulta SQL que une la tabla de productos con la tabla de categorías
             String sql = "SELECT p.id, p.nombre, p.id_categoria, c.nombre AS nombre_categoria, p.distribuidor, p.precio FROM productos p "
                     + "INNER JOIN categorias c ON p.id_categoria = c.id";
 
