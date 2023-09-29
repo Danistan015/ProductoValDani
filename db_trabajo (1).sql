@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-09-2023 a las 18:36:20
+-- Tiempo de generación: 29-09-2023 a las 14:43:05
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -37,14 +37,15 @@ CREATE TABLE `categorias` (
 --
 
 INSERT INTO `categorias` (`ID`, `Nombre`) VALUES
-(5, 'Comida'),
+(5, 'Comidas'),
 (14, 'danueka'),
+(23, 'danuekas'),
 (12, 'esa es'),
+(19, 'kellyyy'),
 (4, 'Maquillaje'),
 (2, 'Medicamentos'),
 (3, 'Ropa'),
-(1, 'Tecnologia'),
-(13, 'val');
+(1, 'Tecnologias');
 
 -- --------------------------------------------------------
 
@@ -67,7 +68,8 @@ CREATE TABLE `productos` (
 INSERT INTO `productos` (`id`, `nombre`, `id_categoria`, `distribuidor`, `precio`) VALUES
 (1, 'mariana', 14, 'dan', 1200000),
 (11, 'Bufandas', 3, 'Bufanderis', 1200),
-(12, 'Pc gamer', 1, 'tecnology', 723662),
+(12, 'Pc gamers', 1, 'tecnology', 723662),
+(233, 'Kellys', 19, 'La mamà', 34532),
 (29138, 'mariana', 14, 'YOLANDA', 8534854358);
 
 --
@@ -79,7 +81,8 @@ INSERT INTO `productos` (`id`, `nombre`, `id_categoria`, `distribuidor`, `precio
 --
 ALTER TABLE `categorias`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `Nombre` (`Nombre`);
+  ADD UNIQUE KEY `Nombre` (`Nombre`),
+  ADD UNIQUE KEY `Nombre_2` (`Nombre`);
 
 --
 -- Indices de la tabla `productos`
@@ -96,7 +99,7 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `ID` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `ID` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
